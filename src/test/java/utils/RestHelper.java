@@ -15,7 +15,7 @@ public class RestHelper {
     Response response;
 
     public RestHelper() {
-
+        request=given();
         RestAssured.baseURI = TestConfig.getEnvProperty("baseUrl");
         // Trust all hosts
         RestAssured.useRelaxedHTTPSValidation();
@@ -28,7 +28,6 @@ public class RestHelper {
      * @param headerMap map of the headers
      */
     public void constructHeaders(final Map<String, String> headerMap) {
-        request = given();
         for (String name : headerMap.keySet()) {
         request.headers(name, headerMap.get(name));
         }
@@ -38,8 +37,8 @@ public class RestHelper {
      *
      * @param queryParam map
      */
-    public void constructQueryParameters(final Map<String, String> queryParam) {
-        request=given();
+    public void constructQueryParameters(final Map<String,?> queryParam) {
+
         for (String name : queryParam.keySet()) {
             request.queryParam(name, queryParam.get(name));
         }
