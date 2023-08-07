@@ -38,6 +38,7 @@ public class GenderizeTest {
         Assert.assertEquals(response.statusCode(), 200);
         Gender actualResponse = response.getBody().as(Gender.class);
         Assert.assertEquals(actualResponse.getGender(),gender);
+        restHelper.jsonSchemaValidator(response,"genderSchema.json");
     }
 
     @Test

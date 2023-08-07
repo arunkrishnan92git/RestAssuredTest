@@ -1,8 +1,11 @@
 package utils;
 
 import io.restassured.RestAssured;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,6 +97,10 @@ public class RestHelper {
 
         response.then().log().all();
         return response;
+    }
+    public void jsonSchemaValidator(Response response, String schemaFile){
+        InputStream jsonSchema = getClass().getClassLoader().getResourceAsStream(schemaFile);
+        response.then().body(JsonSchemaValidator.matchesJsonSchema(jsonSchema));
     }
 }
 
