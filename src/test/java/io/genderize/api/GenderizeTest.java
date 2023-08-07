@@ -1,14 +1,20 @@
 package io.genderize.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pojo.Gender;
 import utils.RestHelper;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class GenderizeTest {
@@ -46,6 +52,16 @@ public class GenderizeTest {
         restHelper.constructQueryParameters(queryParam);
         Response response = restHelper.sendRequest("get", "genderizeUri");
         response.then().statusCode(200);
+        Gender actualResponse = response.getBody().as(Gender.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            Gender expectedResponse = mapper.readValue(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\expectedResults\\nullQueryParameterResponse.json"), Gender.class);
+            assertThat(actualResponse).isEqualToComparingFieldByField(expectedResponse);
+        } catch (IOException e) {
+           Assert.fail("Expected File not found");
+        }
     }
 
     @Test
