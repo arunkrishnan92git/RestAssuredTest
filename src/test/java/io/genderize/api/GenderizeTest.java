@@ -19,15 +19,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GenderizeTest {
     RestHelper restHelper;
+    ObjectMapper mapper;
     @DataProvider(name = "successQueryParamValues")
     public Object[][] successQueryParamData(){
         return new Object[][]{
-                {"Meena","female",23},{"Bangalore","male",29},{"Chennai","female",23},{"!@#$","null",23}
+                {"Patrick","male"},{"Nancy","female"},{"123",null},{"Q123",null},{"!@#$",null}
         };
     }
 
     @Test(dataProvider = "successQueryParamValues")
-    public void successfulGenderNameTest(String paramValue,String gender, int age) {
+    public void successfulGenderNameTest(String paramValue,String gender) {
         restHelper = new RestHelper();
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("name",paramValue);
@@ -35,6 +36,8 @@ public class GenderizeTest {
 
         Response response = restHelper.sendRequest("get", "genderizeUri");
         Assert.assertEquals(response.statusCode(), 200);
+        Gender actualResponse = response.getBody().as(Gender.class);
+        Assert.assertEquals(actualResponse.getGender(),gender);
     }
 
     @Test
@@ -47,6 +50,7 @@ public class GenderizeTest {
     @Test
     public void errorQueryParameterValueMissingTest() {
         restHelper = new RestHelper();
+        mapper = new ObjectMapper();
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("name", "");
         restHelper.constructQueryParameters(queryParam);
@@ -54,7 +58,7 @@ public class GenderizeTest {
         response.then().statusCode(200);
         Gender actualResponse = response.getBody().as(Gender.class);
 
-        ObjectMapper mapper = new ObjectMapper();
+
 
         try {
             Gender expectedResponse = mapper.readValue(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\expectedResults\\nullQueryParameterResponse.json"), Gender.class);
