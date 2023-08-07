@@ -10,7 +10,7 @@ import java.util.Properties;
 public class TestConfig {
 
     private static String PROPERTIES_FILE;
-    private static String environment = System.getProperty("env");
+    private static final String environment = System.getProperty("env");
     private static Properties envprops;
 
 

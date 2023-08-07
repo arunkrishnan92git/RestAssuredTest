@@ -8,14 +8,13 @@ import utils.RestHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
 
 public class GenderizeTest {
     @Test
     public void successfulGenderNameTest() {
 
         RestHelper restHelper = new RestHelper();
-        Map<String,String> queryParam = new HashMap();
+        Map<String,String> queryParam = new HashMap<>();
         queryParam.put("name","tendon");
         restHelper.constructQueryParameters(queryParam);
 

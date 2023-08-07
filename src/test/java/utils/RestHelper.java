@@ -28,13 +28,10 @@ public class RestHelper {
      * @param headerMap map of the headers
      */
     public void constructHeaders(final Map<String, String> headerMap) {
-
         request = given();
-        Map<String, String> headers = new HashMap<>();
         for (String name : headerMap.keySet()) {
-            request.headers(name, headerMap.get(name));
+        request.headers(name, headerMap.get(name));
         }
-
     }
     /**
      * Construct Query Parameters
@@ -43,11 +40,9 @@ public class RestHelper {
      */
     public void constructQueryParameters(final Map<String, String> queryParam) {
         request=given();
-        Map<String, String> queryParameters = new HashMap<>();
         for (String name : queryParam.keySet()) {
             request.queryParam(name, queryParam.get(name));
         }
-
     }
     /**
      * Construct request body.
@@ -65,11 +60,11 @@ public class RestHelper {
      */
     public Response sendRequest(final String requestType, final String uriKey) {
 
-        HttpMethod method = (requestType == "get") ? HttpMethod.GET
-                : (requestType == "post") ? HttpMethod.POST
-                : (requestType == "put") ? HttpMethod.PUT
-                : (requestType == "delete") ? HttpMethod.DELETE
-                : (requestType == "patch") ? HttpMethod.PATCH : HttpMethod.OPTIONS;
+        HttpMethod method = (requestType.equals("get")) ? HttpMethod.GET
+                : (requestType.equals("post"))? HttpMethod.POST
+                : (requestType.equals("put")) ? HttpMethod.PUT
+                : (requestType.equals("delete"))? HttpMethod.DELETE
+                : (requestType.equals("patch")) ? HttpMethod.PATCH : HttpMethod.OPTIONS;
 
         String parameterUri = TestConfig.getEnvProperty(uriKey);
         request.log().all();
