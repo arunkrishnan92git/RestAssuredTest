@@ -1,6 +1,10 @@
 package io.genderize.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Link;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -26,6 +30,10 @@ public class GenderizeTest {
                 {"Patrick","male"},{"Nancy","female"},{"123",null},{"Q123",null},{"!@#$",null}
         };
     }
+    @Epic("Genderize API Implementation")
+    @Story("Probability of Gender API")
+    @Link(value = "https://genderize.io/")
+    @Description("This is a data driven test that verifies various success scenarios")
 
     @Test(dataProvider = "successQueryParamValues")
     public void successfulGenderNameTest(String paramValue,String gender) {

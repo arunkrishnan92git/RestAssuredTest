@@ -1,5 +1,6 @@
 package utils;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
@@ -74,22 +75,22 @@ public class RestHelper {
 
         switch (method) {
             case GET:
-                response = request.when().get(baseURI + parameterUri);
+                response = request.filter(new AllureRestAssured()).when().get(baseURI + parameterUri);
                 break;
             case PUT:
-                response = request.when().put(baseURI + parameterUri);
+                response = request.filter(new AllureRestAssured()).when().put(baseURI + parameterUri);
                 break;
             case POST:
-                response = request.when().post(baseURI + parameterUri);
+                response = request.filter(new AllureRestAssured()).when().post(baseURI + parameterUri);
                 break;
             case PATCH:
-                response = request.when().patch(baseURI + parameterUri);
+                response = request.filter(new AllureRestAssured()).when().patch(baseURI + parameterUri);
                 break;
             case DELETE:
-                response = request.when().delete(baseURI + parameterUri);
+                response = request.filter(new AllureRestAssured()).when().delete(baseURI + parameterUri);
                 break;
             case OPTIONS:
-                response = request.when().options(baseURI + parameterUri);
+                response = request.filter(new AllureRestAssured()).when().options(baseURI + parameterUri);
                 break;
             default:
                 break;
