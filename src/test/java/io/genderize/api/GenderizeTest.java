@@ -7,7 +7,6 @@ import io.qameta.allure.Link;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pojo.Gender;
@@ -24,31 +23,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GenderizeTest {
     RestHelper restHelper;
     ObjectMapper mapper;
+
     @DataProvider(name = "successQueryParamValues")
-    public Object[][] successQueryParamData(){
+    public Object[][] successQueryParamData() {
         return new Object[][]{
-                {"Patrick","male"},{"Nancy","female"},{"123",null},{"Q123",null},{"!@#$",null}
+                {"Patrick", "male"}, {"Nancy", "female"}, {"123", null}, {"Q123", null}, {"!@#$", null}
         };
     }
+
     @Epic("Genderize API Implementation")
     @Story("Probability of Gender API")
     @Link(value = "https://genderize.io/")
     @Description("This is a data driven test that verifies various success scenarios")
 
     @Test(dataProvider = "successQueryParamValues")
-    public void successfulGenderNameTest(String paramValue,String gender) {
+    public void successfulGenderNameTest(String paramValue, String gender) {
         restHelper = new RestHelper();
         Map<String, String> queryParam = new HashMap<>();
-        queryParam.put("name",paramValue);
+        queryParam.put("name", paramValue);
         restHelper.constructQueryParameters(queryParam);
 
         Response response = restHelper.sendRequest("get", "genderizeUri");
         Assert.assertEquals(response.statusCode(), 200);
         Gender actualResponse = response.getBody().as(Gender.class);
-        Assert.assertEquals(actualResponse.getGender(),gender);
-        restHelper.jsonSchemaValidator(response,"genderSchema.json");
+        Assert.assertEquals(actualResponse.getGender(), gender);
+        //jsonSchema Validator is used to validate the response schema
+        restHelper.jsonSchemaValidator(response, "genderSchema.json");
     }
 
+    //Verify whether api returns 422 when query parameters are missing.
     @Test
     public void errorQueryParameterMissingTest() {
         restHelper = new RestHelper();
@@ -56,6 +59,7 @@ public class GenderizeTest {
         Assert.assertEquals(response.statusCode(), 422);
     }
 
+    //verify whether api returns 200, even when null value is passed in parameter.
     @Test
     public void errorQueryParameterValueMissingTest() {
         restHelper = new RestHelper();
@@ -67,20 +71,20 @@ public class GenderizeTest {
         response.then().statusCode(200);
         Gender actualResponse = response.getBody().as(Gender.class);
 
-
-
+        //Sample for using object mapper for comparison of expected and actual as objects.
         try {
-            Gender expectedResponse = mapper.readValue(new File(System.getProperty("user.dir")+"\\src\\test\\resources\\expectedResults\\nullQueryParameterResponse.json"), Gender.class);
+            Gender expectedResponse = mapper.readValue(new File(System.getProperty("user.dir") + "\\src\\test\\resources\\expectedResults\\nullQueryParameterResponse.json"), Gender.class);
             assertThat(actualResponse).isEqualToComparingFieldByField(expectedResponse);
         } catch (IOException e) {
-           Assert.fail("Expected File not found");
+            Assert.fail("Expected File not found");
         }
     }
 
+    //Verify whether api returns 422 when invalid parameter value is passed
     @Test
     public void invalidQueryParameterTest() {
         restHelper = new RestHelper();
-        Map<String,Integer> queryParam = new HashMap<String, Integer>();
+        Map<String, Integer> queryParam = new HashMap<String, Integer>();
         queryParam.put("name", 123);
         restHelper.constructQueryParameters(queryParam);
         Response response = restHelper.sendRequest("get", "genderizeUri");

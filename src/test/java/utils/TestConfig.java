@@ -9,8 +9,8 @@ import java.util.Properties;
 
 public class TestConfig {
 
-    private static String PROPERTIES_FILE;
     private static final String environment = System.getProperty("env");
+    private static String PROPERTIES_FILE;
     private static Properties envprops;
 
 
@@ -40,7 +40,6 @@ public class TestConfig {
         }
         return envprops.getProperty(key);
     }
-
 
 
     public static String getEnvironment() {
