@@ -25,5 +25,5 @@ Note - As allure reports use test listeners, please ensure that default reporter
 Eg., IntelliJ  - testng.xml - Edit configuration >> Configuration >> Listeners tab>> Check box - "Use default reporters" should be enabled. 
 
 ## Allure report Overview - 
-1. Epic and Stories view is depicted.Overall pass percentage and trend will be displayed.  ![img_2.png](img_2.png); 
-2. Description, parameters, and request and response are recorded for each test.![img_3.png](img_3.png) ![img_4.png](img_4.png)
+1. Epic and Stories view is depicted.Overall pass percentage and trend will be displayed.<img src= "img_1.png">
+2. Description, parameters, and request and response are recorded for each test.<img src= "img_3.png"> <img src= "img_4.png">
